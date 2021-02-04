@@ -111,7 +111,7 @@ public class Main extends Application {
                     lblMessage.setText("      Login Successful!!!");
                     lblMessage.setTextFill(Color.GREEN);
 
-                    SecondScene test = new SecondScene();
+                    SecondScene test = new SecondScene("Vishnu", "1602-18-735-059");
                     primaryStage.setTitle("Session Info");
                     primaryStage.setScene(new Scene(test.bp));
 //                    primaryStage.close();
