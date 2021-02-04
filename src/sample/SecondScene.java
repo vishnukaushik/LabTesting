@@ -10,6 +10,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 import java.awt.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 public class SecondScene {
     BorderPane bp = new BorderPane();
@@ -31,8 +34,11 @@ public class SecondScene {
         this.name.setText(name);
         this.roll.setText(roll);
 
-        String initial_text = "The time ends at: ";
-        Label time = new Label(initial_text);
+
+        LocalTime present_time = LocalTime.now().plusHours(25);
+        DateTimeFormatter Format = DateTimeFormatter.ofPattern("hh:mm a");
+        String initial_text = "The session ends at: ";
+        Label time = new Label(initial_text+present_time.format(Format));
         time.setFont(new Font("Arial",20));
 
         GridPane main_gp = new GridPane();
