@@ -1,5 +1,5 @@
 package sample;
-
+//tempgit status
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +18,115 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+class client extends Thread{
+    //initialize socket and input stream
+    private Socket socket = null;
+    private DataInputStream input = null;
+    private DataOutputStream out	 = null;
+    private ServerSocket server = null;
+    private DataInputStream in	 = null;
+
+    // constructor with port
+    public client(int port)
+    {
+        if (port!=0)
+        {
+
+            // starts server and waits for a connection
+            try
+            {
+                server = new ServerSocket(port);
+                System.out.println("main.java.Client started");
+
+                System.out.println("Waiting for server to respond ...");
+
+                socket = server.accept();
+                System.out.println("Server accepted");
+
+                // takes input from the client socket
+                in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+
+                input = new DataInputStream(System.in);
+
+                // sends output to the socket
+                out = new DataOutputStream(socket.getOutputStream());
+
+                String line = "";
+
+                // reads message from client until "Over" is sent
+                while (!line.equals("ok"))
+                {
+                    try
+                    {
+                        // line = input.readLine();
+                        //  out.writeUTF(line);
+
+                        line = in.readUTF();
+                        System.out.println("Received : "+line);
+                        line="ok";
+                        out.writeUTF(line);
+
+                    }
+                    catch(IOException i)
+                    {
+                        System.out.println(i);
+                    }
+                }
+
+                System.out.println("Closing connection");
+                Stage primaryStage= new Stage();
+
+                BorderPane bp = new BorderPane();
+                bp.setPadding(new Insets(100,100,100,100));
+
+                SecondScene test = new SecondScene("Vishnu", "1602-18-735-059");
+                Scene scene = new Scene(bp);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+                // close connection
+                // socket.close();
+                // in.close();
+            }
+            catch(IOException i)
+            {
+                System.out.println(i);
+            }
+
+            try
+            {
+                input.close();
+                out.close();
+                in.close();
+                socket.close();
+            }
+            catch(IOException i)
+            {
+                System.out.println(i);
+            }
+        }
+    }
+
+    public void run(){
+        System.out.println("Waiting for the server in separate thread.......");
+        client obj = new client(5000);
+    }
+}
+//
+//class Simple2 extends Thread{
+//    public void run(){
+//        System.out.println("task two");
+//    }
+//}
+
+
 public class Main extends Application {
 
     String username = "admin";
@@ -25,11 +134,17 @@ public class Main extends Application {
     String checkUser, checkPw;
 
     public static void main(String[] args) {
+
+        //t2.start();
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
+        client t1=new client(0);
+        //Simple2 t2=new Simple2();
+
+        t1.start();
         primaryStage.setTitle("Login");
 
 
