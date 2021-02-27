@@ -24,4 +24,7 @@ public class SecondScene {
         String initial = "The session ends at " + present.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
         endtime.setText(initial);
     }
+    public void logout(){
+        System.exit(1);
+    }
 }
