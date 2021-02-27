@@ -41,5 +41,4 @@ public class SecondScene {
         primaryStage.setScene(new Scene(root,600,500));
 //        TODO update database when user logs out
     }
-
 }
