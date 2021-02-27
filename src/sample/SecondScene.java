@@ -1,53 +1,27 @@
 package sample;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class SecondScene {
-    BorderPane bp = new BorderPane();
-    Label name = new Label();
-    Label roll = new Label();
-    public SecondScene(String name, String roll) {
-
-        this.name.setFont(new Font("Arial",20));
-        this.roll.setFont(new Font("Arial",20));
-
-        bp.setPadding(new Insets(100,100,100,100));
-
-        HBox heading_box = new HBox();
-        heading_box.setAlignment(Pos.BASELINE_CENTER);
-        Text heading = new Text("Authentication Successful");
-        heading.setFont(new Font("Arial",20));
-        heading_box.getChildren().add(heading);
-
-        this.name.setText(name);
-        this.roll.setText(roll);
 
 
-        LocalTime present_time = LocalTime.now().plusHours(25);
-        DateTimeFormatter Format = DateTimeFormatter.ofPattern("hh:mm a");
-        String initial_text = "The session ends at: ";
-        Label time = new Label(initial_text+present_time.format(Format));
-        time.setFont(new Font("Arial",20));
-
-        GridPane main_gp = new GridPane();
-        main_gp.setPadding(new Insets(100));
-        main_gp.setAlignment(Pos.BASELINE_CENTER);
-        main_gp.add(this.name,0,0);
-        main_gp.add(this.roll,0,1);
-
-        bp.setTop(heading_box);
-        bp.setCenter(main_gp);
-        bp.setBottom(time);
-        BorderPane.setAlignment(time,Pos.BASELINE_CENTER);
+    @FXML Label StudentName = new Label();
+    @FXML Label StudentRoll = new Label();
+    @FXML Label endtime = new Label();
+    public void setStudent(Student student)
+    {
+        System.out.println("Hi");
+        StudentName.setText("Name: "+student.getName());
+        StudentRoll.setText("Roll Number: "+student.getRoll());
+    }
+    public void setTime()
+    {
+        LocalTime present = LocalTime.now();
+        String initial = "The session ends at " + present.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
+        endtime.setText(initial);
     }
 }
