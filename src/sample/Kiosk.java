@@ -18,7 +18,7 @@ public class Kiosk {
 
     public static boolean isWindows(){
         String os = System.getProperty("os.name").toLowerCase();
-        return (os.indexOf( "win" ) >= 0);
+        return (os.contains("win"));
     }
 
     public static void kiosk(Stage primaryStage)
@@ -38,7 +38,7 @@ public class Kiosk {
                 public void run() {
                     lib = User32.INSTANCE;
                     WinDef.HMODULE hMod = Kernel32.INSTANCE.GetModuleHandle(null);
-                    keyboardHook = new WinUser.LowLevelKeyboardProc() {
+                    keyboardHook = new LowLevelKeyboardProc() {
                         public WinDef.LRESULT callback(int nCode, WinDef.WPARAM wParam, WinUser.KBDLLHOOKSTRUCT info) {
                             if (nCode >= 0) {
                                 switch (info.vkCode){

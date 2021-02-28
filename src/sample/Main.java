@@ -7,13 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class Main extends Application {
-
-
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -29,16 +23,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        String username = "root",password="root", url = "jdbc:mysql://localhost:3306/Lab";
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection Successful");
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Connection failed!!!");
-
-        }
+//        TODO connect to database here
         launch(args);
     }
 }

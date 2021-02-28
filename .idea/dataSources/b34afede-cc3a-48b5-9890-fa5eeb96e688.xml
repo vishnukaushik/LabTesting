@@ -906,33 +906,5 @@ SELECT|sys.sys_config:null
       <ObjectGrants>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,RELOAD,SHUTDOWN,PROCESS,FILE,REFERENCES,INDEX,ALTER,SHOW DATABASES,SUPER,CREATE TEMPORARY TABLES,LOCK TABLES,EXECUTE,REPLICATION SLAVE,REPLICATION CLIENT,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,CREATE USER,EVENT,TRIGGER,CREATE TABLESPACE,CREATE ROLE,DROP ROLE!
 </ObjectGrants>
     </user>
-    <table id="283" parent="3" name="computers"/>
-    <column id="284" parent="283" name="id">
-      <Position>1</Position>
-      <DataType>int unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="285" parent="283" name="status">
-      <Position>2</Position>
-      <DataType>tinyint|0s</DataType>
-    </column>
-    <column id="286" parent="283" name="ip">
-      <Position>3</Position>
-      <DataType>varchar(15)|0s</DataType>
-    </column>
-    <index id="287" parent="283" name="id_UNIQUE">
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <key id="288" parent="283" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <key id="289" parent="283" name="id_UNIQUE">
-      <ColNames>id</ColNames>
-      <UnderlyingIndexName>id_UNIQUE</UnderlyingIndexName>
-    </key>
   </database-model>
 </dataSource>

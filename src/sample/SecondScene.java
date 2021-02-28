@@ -21,7 +21,6 @@ public class SecondScene {
     @FXML Label endtime = new Label();
     public void setStudent(Student student)
     {
-        System.out.println("Hi");
         StudentName.setText("Name: "+student.getName());
         StudentRoll.setText("Roll Number: "+student.getRoll());
     }
@@ -37,7 +36,7 @@ public class SecondScene {
         loader.setLocation(getClass().getResource("firstScene.fxml"));
         Parent root = loader.load();
         Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        primaryStage.setScene(new Scene(root,600,500));
+        primaryStage.setScene(new Scene(root));
         Kiosk.kiosk(primaryStage);
 //        TODO update database when user logs out
     }
