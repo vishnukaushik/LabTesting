@@ -5,19 +5,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.FirstScene">
+<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.FirstScene">
     <children>
-      <BorderPane layoutY="-1.0" prefHeight="416.0" prefWidth="600.0">
+      <BorderPane>
          <top>
-              <Label graphicTextGap="5.0" text="LAB AUTHENTICATION LOGIN" textAlignment="CENTER" underline="true" wrapText="true" BorderPane.alignment="CENTER">
+              <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="LAB AUTHENTICATION LOGIN" textAlignment="CENTER" underline="true" wrapText="true" BorderPane.alignment="CENTER_RIGHT">
                   <font>
                       <Font name="Courier New Bold" size="26.0" />
                   </font>
               </Label>
          </top>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
          <center>
             <GridPane alignment="CENTER_RIGHT" hgap="10.0" prefHeight="220.0" prefWidth="520.0" vgap="20.0" BorderPane.alignment="CENTER_RIGHT">
               <columnConstraints>
@@ -53,9 +50,6 @@
                      </font>
                   </PasswordField>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </GridPane>
          </center>
          <bottom>
@@ -77,6 +71,12 @@
                </children>
              </GridPane>
          </bottom>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
       </BorderPane>
     </children>
 </Pane>

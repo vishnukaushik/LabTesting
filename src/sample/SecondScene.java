@@ -36,9 +36,9 @@ public class SecondScene {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("firstScene.fxml"));
         Parent root = loader.load();
-        FirstScene controller = loader.getController();
         Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(new Scene(root,600,500));
+        Kiosk.kiosk(primaryStage);
 //        TODO update database when user logs out
     }
 

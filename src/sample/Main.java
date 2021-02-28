@@ -1,5 +1,6 @@
 package sample;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,13 +13,19 @@ import java.sql.SQLException;
 
 public class Main extends Application {
 
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Kiosk.blockKeys();
         Parent root = FXMLLoader.load(getClass().getResource("firstScene.fxml"));
         primaryStage.setTitle("Login Page");
-        primaryStage.setScene(new Scene(root, 600, 500));
+        primaryStage.setScene(new Scene(root));
+        Kiosk.kiosk(primaryStage);
         primaryStage.show();
     }
+
+
 
 
     public static void main(String[] args) {
