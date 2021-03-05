@@ -2,22 +2,17 @@ package sample;
 
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Main extends Application {
+
+    static boolean bypass = false;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -27,6 +22,10 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         Kiosk.kiosk(primaryStage);
         primaryStage.show();
+        Platform.runLater(()->{
+            if(bypass)
+                primaryStage.close();
+        });
     }
 
 
@@ -34,87 +33,35 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 //        TODO connect to database here
-        launch(args);
-    }
-}
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Application.launch(Main.class, args);
+            }
+        });
+        t1.start();
 
-class client extends Thread{
-    //initialize socket and input stream
-    private Socket socket = null;
-    private DataInputStream input = null;
-    private DataOutputStream out	 = null;
-    private ServerSocket server = null;
-    private DataInputStream in	 = null;
-
-    // constructor with port
-    public client(int port)
-    {
-        if (port!=0)
-        {
-
-            // starts server and waits for a connection
-            try
+        Platform.runLater(()->{
+            String name = "vishnus";
+            if(name.equals("vishnu"))
             {
-                server = new ServerSocket(port);
-                System.out.println("main.java.Client started");
-
-                System.out.println("Waiting for server to respond ...");
-
-                socket = server.accept();
-                System.out.println("Server accepted");
-
-                // takes input from the client socket
-                in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
-                input = new DataInputStream(System.in);
-
-                // sends output to the socket
-                out = new DataOutputStream(socket.getOutputStream());
-
-                String line = "";
-
-                // reads message from client until "Over" is sent
-                while (!line.equals("ok"))
-                {
-                    try
-                    {
-                        // line = input.readLine();
-                        //  out.writeUTF(line);
-
-                        line = in.readUTF();
-                        System.out.println("Received : "+line);
-                        line="ok";
-                        out.writeUTF(line);
-
-                    }
-                    catch(IOException i)
-                    {
-                        System.out.println(i);
-                    }
+                Stage primaryStage = new Stage();
+                bypass = true;
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(SecondScene.class.getResource("secondScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
+                SecondScene controller = loader.getController();
+//            TODO add name and roll no. from server to below Student object
+                controller.setStudent(new Student("Vishnu","059"));
+                controller.setTime();
+                primaryStage.setScene(new Scene(root,600,500));
+                primaryStage.show();
             }
-            catch(IOException i)
-            {
-                System.out.println(i);
-            }
-
-            try
-            {
-                input.close();
-                out.close();
-                in.close();
-                socket.close();
-            }
-            catch(IOException i)
-            {
-                System.out.println(i);
-            }
-        }
-    }
-
-    public void run(){
-        System.out.println("Waiting for the server in separate thread.......");
-        client obj = new client(5000);
+        });
     }
 }
