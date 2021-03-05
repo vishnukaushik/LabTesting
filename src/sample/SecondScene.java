@@ -26,6 +26,8 @@ public class SecondScene {
     }
     public void setTime()
     {
+        StudentRoll.setText(Client.line);
+
         LocalTime present = LocalTime.now();
         String initial = "The session ends at " + present.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
         endtime.setText(initial);
@@ -37,7 +39,7 @@ public class SecondScene {
         Parent root = loader.load();
         Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(new Scene(root));
-        Kiosk.kiosk(primaryStage);
+        //Kiosk.kiosk(primaryStage);
 //        TODO update database when user logs out
     }
 

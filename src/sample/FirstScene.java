@@ -27,7 +27,7 @@ public class FirstScene {
             Parent root = loader.load();
             SecondScene controller = loader.getController();
 //            TODO add name and roll no. from server to below Student object
-            controller.setStudent(new Student("Vishnu","059"));
+            //controller.setStudent(new Student("Vishnu","059"));
             controller.setTime();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             primaryStage.setScene(new Scene(root,600,500));

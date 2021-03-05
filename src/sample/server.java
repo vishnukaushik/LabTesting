@@ -1,10 +1,12 @@
 // A Java program for a Client
 package sample;
-import java.net.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import static java.lang.Class.forName;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class server
 {
@@ -36,7 +38,7 @@ public class server
         }
         catch(UnknownHostException u)
         {
-            System.out.println(u);
+            u.getStackTrace();
         }
         catch(IOException i)
         {
@@ -77,25 +79,38 @@ public class server
         }
     }
 
-    public static void main(String args[])
+    /*public static void main(String args[])
     {
 
         try{
+            Scanner sc= new Scanner(System.in); //System.in is a standard input stream
+            System.out.print("Enter Your Roll Number : ");
+            String roll= sc.nextLine();              //reads string
+            System.out.print("Enter Your Name : ");
+            String name= sc.nextLine();              //reads string
+
+            //System.out.print("You have entered: "+roll);
             forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
             Statement stmt = con.createStatement();
             ResultSet rs=stmt.executeQuery("select * from lab.clients where status=1");
             Vector<String> vec = new Vector<String>();
+            Vector<String> ids = new Vector<String>();
             if (rs.next())
             {
 
                 do {
                     vec.add(rs.getString(2));
+                    ids.add(rs.getString(1));
                     // System.out.println(rs.getInt(1)+"  "+rs.getString(2));
                 }while(rs.next());
                 System.out.println("Available Systems : "+vec);
                 System.out.println("Allocating System : "+vec.get(0));
                 server client = new server(vec.get(0), 5000);
+
+                int rs1=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
+                System.out.println("Successfully allocated System "+ids.get(0)+" to user "+roll);
+
             }
             else{
                 System.out.println("Systems Not available....Please come after sometime....");
@@ -105,5 +120,9 @@ public class server
 
 
 
+    }*/
+
+    public static void main(String[] args) {
+        server client = new server("192.168.43.78", 5000);
     }
 }
