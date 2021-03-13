@@ -4,25 +4,23 @@ import java.net.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.Class.forName;
 
-public class server
-{
+public class server {
 
-    // initialize socket and input output streams
-    private Socket socket		 = null;
+    private Socket socket = null;
     private DataInputStream input = null;
-    private DataOutputStream out	 = null;
+    private DataOutputStream out = null;
 
     private ServerSocket server = null;
-    private DataInputStream in	 = null;
+    private DataInputStream in = null;
 
     // constructor to put ip address and port
-    public server(String address, int port)
-    {
+    public server(String address, int port) {
         // establish a connection
-        try
-        {
+        try {
             socket = new Socket(address, port);
             System.out.println("Connected");
 
@@ -33,13 +31,9 @@ public class server
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(
                     new BufferedInputStream(socket.getInputStream()));
-        }
-        catch(UnknownHostException u)
-        {
+        } catch (UnknownHostException u) {
             System.out.println(u);
-        }
-        catch(IOException i)
-        {
+        } catch (IOException i) {
             System.out.println(i);
         }
 
@@ -48,39 +42,32 @@ public class server
 
         // keep reading until "Over" is input
 
-        while (!line.equals("ok"))
-        {
-            try
-            {
+        while (!line.equals("ok")) {
+            try {
                 //line = input.readLine();
-                System.out.println("Sent : "+line);
+                System.out.println("Sent : " + line);
                 out.writeUTF(line);
                 line = in.readUTF();
-                System.out.println("Received : "+line);
-            }
-            catch(IOException i)            {
+                System.out.println("Received : " + line);
+            } catch (IOException i) {
                 System.out.println(i);
             }
         }
 
         // close the connection
-        try
-        {
-            input.close();
+        try {
+            //input.close();
             out.close();
             in.close();
             socket.close();
-        }
-        catch(IOException i)
-        {
+        } catch (IOException i) {
             System.out.println(i);
         }
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) throws IOException {
 
-        try{
+        /*try{
             forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
             Statement stmt = con.createStatement();
@@ -101,9 +88,30 @@ public class server
                 System.out.println("Systems Not available....Please come after sometime....");
             }
             con.close();
-        }catch(Exception e){ System.out.println(e);}
+        }catch(Exception e){ System.out.println(e);}*/
 
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+
+        do{
+
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            input.readLine();
+            try {
+
+                server client = new server("192.168.1.3", 5056);
+                System.out.println("connection established");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }while(true);
 
 
     }
 }
+

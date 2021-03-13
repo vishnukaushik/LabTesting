@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="jna-platform-4.5.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../Downloads/jar_files (1)/jna-platform-4.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Additional_libraries/jna-platform-4.5.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

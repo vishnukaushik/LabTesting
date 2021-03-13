@@ -9,12 +9,18 @@ import com.sun.jna.platform.win32.WinUser.HHOOK;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Kiosk {
 
     private static HHOOK hhk;
     private static LowLevelKeyboardProc keyboardHook;
     private static User32 lib;
+    public static Thread kiosk_thread;
+    public static boolean kiosk_breaker= false;
+
 
     public static boolean isWindows(){
         String os = System.getProperty("os.name").toLowerCase();
@@ -30,9 +36,14 @@ public class Kiosk {
         primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
     }
 
+
+
     public static void blockKeys() {
+        if(kiosk_breaker==true){
+            System.exit(1);
+        }
         if (isWindows()) {
-            new Thread(new Runnable() {
+            kiosk_thread=new Thread(new Runnable() {
 
                 @Override
                 public void run() {
@@ -58,19 +69,37 @@ public class Kiosk {
                         }
                     };
                     hhk = lib.SetWindowsHookEx(13, keyboardHook, hMod, 0);
+
                     int result;
                     WinUser.MSG msg = new WinUser.MSG();
+
                     while ((result = lib.GetMessage(msg, null, 0, 0)) != 0) {
+                        System.out.println("running while + ");
+                        System.out.print(kiosk_thread);
                         if (result == -1) {
                             break;
-                        } else {
+                        }
+                        else if(kiosk_breaker){
+                            System.out.println("i am in else if loop");
+                            break;
+                        }
+                        else {
                             lib.TranslateMessage(msg);
                             lib.DispatchMessage(msg);
                         }
                     }
+
                     lib.UnhookWindowsHookEx(hhk);
+
                 }
-            }).start();
+            });
+            kiosk_thread.start();
+        }
+    }
+
+    public static void unblockKey() {
+        if (isWindows() && lib != null) {
+            lib.UnhookWindowsHookEx(hhk);
         }
     }
 }
