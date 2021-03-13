@@ -30,8 +30,10 @@ public class FirstScene {
             controller.setStudent(new Student("Vishnu","059"));
             controller.setTime();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            client.Platform_store=primaryStage;
+            Kiosk.unblockKey();
             primaryStage.setScene(new Scene(root,600,500));
-
+            primaryStage.show();
         }
         else
         {

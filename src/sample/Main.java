@@ -1,111 +1,202 @@
 package sample;
 
+
+
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.Shell32;
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef.HMODULE;
-import com.sun.jna.platform.win32.WinDef.LRESULT;
-import com.sun.jna.platform.win32.WinDef.WPARAM;
-import com.sun.jna.platform.win32.WinDef.LPARAM;
-import com.sun.jna.platform.win32.WinUser.HHOOK;
-import com.sun.jna.platform.win32.WinUser.KBDLLHOOKSTRUCT;
-import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
-import com.sun.jna.platform.win32.WinUser.MSG;
-import com.sun.jna.Pointer;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Random;
 
 public class Main extends Application {
 
-    private static HHOOK hhk;
-    private static LowLevelKeyboardProc keyboardHook;
-    private static User32 lib;
+    public static Stage storage = null;
+    public static String[] arguments;
+    public static Thread client_Thread;
+    static volatile boolean exit=false;
+    public static boolean restart=false;
+    public static int port_server;
+    public static int counter=0;
+
+    public static void StartClient(int port_no){
+        client_Thread= new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new client(port_no);
+                System.out.println(port_no);
+            }
+        });
+        client_Thread.start();
+    }
+
+    public static void StartApplication(Stage primaryStage) throws IOException {
+        Kiosk.blockKeys();
+        Parent root = FXMLLoader.load(FirstScene.class.getResource("firstScene.fxml"));
+        primaryStage.setTitle("Login Page");
+        primaryStage.setScene(new Scene(root));
+        //Kiosk.kiosk(primaryStage);
+        primaryStage.show();
+        storage= primaryStage;
+    }
+
+    public static void cleanup(){
+
+        client_Thread.interrupt();
+        Platform.exit();
+    }
+    public static int getRandomNumberUsingNextInt(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min) + min;
+    }
+
+    public static void restartProcess() throws IOException {
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", "cd \"C:\\Users\\P.VISHNU VARDHAN\\IdeaProjects\\LabTesting-1\" && Script.cmd");
+        //builder.redirectErrorStream(true);
+        Process p = null;
+        try {
+            p = builder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = null;
+        while (true) {
+            try {
+                line = r.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (line == null) { break; }
+            System.out.println(line);
+        }
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        blockKeys();
-        Parent root = FXMLLoader.load(getClass().getResource("firstScene.fxml"));
-        //Parent second = FXMLLoader.load(getClass().getResource("Secondary.fxml"));
-        primaryStage.setTitle("Login Page");
-        primaryStage.setScene(new Scene(root, 600, 500));
-        primaryStage.setAlwaysOnTop(true);
-        primaryStage.setMaximized(true);
-        primaryStage.setFullScreen(true);
-        primaryStage.setFullScreenExitHint(null);
-        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        primaryStage.show();
+       StartApplication(primaryStage);
     }
-
-    public static boolean isWindows(){
-        String os = System.getProperty("os.name").toLowerCase();
-        return (os.indexOf( "win" ) >= 0);
-    }
-
-    public static void blockKeys() {
-        if (isWindows()) {
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    lib = User32.INSTANCE;
-                    HMODULE hMod = Kernel32.INSTANCE.GetModuleHandle(null);
-                    keyboardHook = new LowLevelKeyboardProc() {
-                        public LRESULT callback(int nCode, WPARAM wParam, KBDLLHOOKSTRUCT info) {
-                            if (nCode >= 0) {
-                                switch (info.vkCode){
-                                    case 0x14: // capslock
-                                    case 0x5B: // Windows key
-                                    case 0x73: //F4 key
-                                    case 0x09: //tab key
-                                    case 0x5C: // right windows key
-                                        return new LRESULT(1);
-                                    default: //do nothing
-                                }
-                            }
-                            Pointer ptr = info.getPointer();
-                            long peer = Pointer.nativeValue(ptr);
-                            return User32.INSTANCE.CallNextHookEx(hhk, nCode, wParam, new LPARAM(peer));
-
-                        }
-                    };
-                    hhk = lib.SetWindowsHookEx(13, keyboardHook, hMod, 0);
-                    int result;
-                    MSG msg = new MSG();
-                    while ((result = lib.GetMessage(msg, null, 0, 0)) != 0) {
-                        if (result == -1) {
-                            break;
-                        } else {
-                            lib.TranslateMessage(msg);
-                            lib.DispatchMessage(msg);
-                        }
-                    }
-                    lib.UnhookWindowsHookEx(hhk);
-                }
-            }).start();
-        }
-    }
-
 
     public static void main(String[] args) {
-        String username = "root",password="root", url = "jdbc:mysql://localhost:3306/Lab";
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection Successful");
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Connection failed!!!");
+//        TODO connect to database here
 
-        }
-        launch(args);
+            int port_no= getRandomNumberUsingNextInt(5000,5100);
+            port_server=port_no;
+            counter++;
+            System.out.println(counter);
+            StartClient(port_no);
+            launch(args);
+
     }
 }
+class client extends Thread{
+    //initialize socket and input stream
+    private Socket socket = null;
+    private DataInputStream input = null;
+    private DataOutputStream out	 = null;
+    private ServerSocket server = null;
+    private DataInputStream in	 = null;
+    public static Stage Platform_store;
+    // constructor with port
 
+    public client(int port)
+    {
+        if (port!=0)
+        {
+
+            // starts server and waits for a connection
+            try
+            {
+                server = new ServerSocket(port);
+                System.out.println("main.java.Client started");
+                System.out.println(Main.port_server);
+                System.out.println("Waiting for server to respond ...");
+
+
+                socket = server.accept();
+                System.out.println("Server accepted");
+
+                // takes input from the client socket
+                in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+
+                input = new DataInputStream(System.in);
+
+                // sends output to the socket
+                out = new DataOutputStream(socket.getOutputStream());
+
+                String line = "";
+
+                // reads message from client until "Over" is sent
+                while (!line.equals("ok"))
+                {
+                    try
+                    {
+
+                        line = in.readUTF();
+                        System.out.println("Received : "+line);
+                        if(line.equals("login")){
+                            Platform.runLater(()->{
+                                    Stage primaryStage = new Stage();
+                                    FXMLLoader loader = new FXMLLoader();
+                                    loader.setLocation(SecondScene.class.getResource("secondScene.fxml"));
+                                    Parent root = null;
+                                    try {
+                                        root = loader.load();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    SecondScene controller = loader.getController();
+
+                                    controller.setStudent(new Student("Vishnu","059"));
+                                    controller.setTime();
+                                    primaryStage.setScene(new Scene(root,600,500));
+                                    primaryStage.show();
+                                    System.out.println("i am in a fx thread");
+                                    Platform_store=primaryStage;
+                                    Main.storage.close();
+                                    Kiosk.unblockKey();
+
+                            });
+
+                        }
+                        line="ok";
+                        out.writeUTF(line);
+
+                    }
+                    catch(IOException i)
+                    {
+                        System.out.println(i);
+                    }
+                }
+
+            }
+            catch(IOException i)
+            {
+                System.out.println(i);
+            }
+
+            try
+            {
+                //input.close();
+                out.close();
+                in.close();
+                socket.close();
+            }
+            catch(IOException i)
+            {
+                System.out.println(i);
+            }
+        }
+    }
+
+    public void run(){
+        System.out.println("Waiting for the server in separate thread.......");
+        client obj = new client(5000);
+    }
+}
