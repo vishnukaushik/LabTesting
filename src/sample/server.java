@@ -1,27 +1,32 @@
-// A Java program for a Client
-package sample;
+package sample;// A Java program for a Client
+
+//package main.java;
+import java.io.IOException;
 import java.net.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-
 import static java.lang.Class.forName;
 
-public class server {
+public class server
+{
+    //public static final Scanner sc = new Scanner(System.in);
 
-    private Socket socket = null;
+    // initialize socket and input output streams
+    private Socket socket		 = null;
     private DataInputStream input = null;
-    private DataOutputStream out = null;
+    private DataOutputStream out	 = null;
 
     private ServerSocket server = null;
-    private DataInputStream in = null;
+    private DataInputStream in	 = null;
 
     // constructor to put ip address and port
-    public server(String address, int port) {
+    public server(String address, String port)
+    {
         // establish a connection
-        try {
-            socket = new Socket(address, port);
+        try
+        {
+            socket = new Socket(address, Integer.parseInt(port));
             System.out.println("Connected");
 
             // takes input from terminal
@@ -31,9 +36,13 @@ public class server {
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(
                     new BufferedInputStream(socket.getInputStream()));
-        } catch (UnknownHostException u) {
+        }
+        catch(UnknownHostException u)
+        {
             System.out.println(u);
-        } catch (IOException i) {
+        }
+        catch(IOException i)
+        {
             System.out.println(i);
         }
 
@@ -42,76 +51,92 @@ public class server {
 
         // keep reading until "Over" is input
 
-        while (!line.equals("ok")) {
-            try {
+        while (!line.equals("ok"))
+        {
+            try
+            {
                 //line = input.readLine();
-                System.out.println("Sent : " + line);
+                System.out.println("Sent : "+line);
                 out.writeUTF(line);
                 line = in.readUTF();
-                System.out.println("Received : " + line);
-            } catch (IOException i) {
+                System.out.println("Received : "+line);
+            }
+            catch(IOException i)            {
                 System.out.println(i);
             }
         }
 
         // close the connection
-        try {
-            //input.close();
+        try
+        {
+//            input.close();
             out.close();
             in.close();
             socket.close();
-        } catch (IOException i) {
+        }
+        catch(IOException i)
+        {
             System.out.println(i);
         }
     }
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException
+    {
+        Scanner sc= new Scanner(System.in);
 
-        /*try{
-            forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
-            Statement stmt = con.createStatement();
-            ResultSet rs=stmt.executeQuery("select * from lab.clients where status=1");
-            Vector<String> vec = new Vector<String>();
-            if (rs.next())
-            {
+        while(true)
+        {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 
-                do {
-                    vec.add(rs.getString(2));
-                    // System.out.println(rs.getInt(1)+"  "+rs.getString(2));
-                }while(rs.next());
-                System.out.println("Available Systems : "+vec);
-                System.out.println("Allocating System : "+vec.get(0));
-                server client = new server(vec.get(0), 5000);
-            }
-            else{
-                System.out.println("Systems Not available....Please come after sometime....");
-            }
-            con.close();
-        }catch(Exception e){ System.out.println(e);}*/
+//            System.out.print("\033[H\033[2J");
+//            System.out.flush();
+            System.out.println("Server Initialized.............");
+            // Scanner sc= new Scanner(System.in);
+
+            try{
+                //System.in is a standard input stream
+                System.out.print("Enter Your Roll Number : ");
+                //long then = System.currentTimeMillis();
+                String roll= sc.nextLine();
+              //  long now = System.currentTimeMillis();//reads string
+                System.out.print("Enter Your Name : ");
+                String name= sc.nextLine();              //reads string
+                //sc.close();
+                //System.out.print("You have entered: "+roll);
+                forName("com.mysql.cj.jdbc.Driver");
+                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
+                Statement stmt = con.createStatement();
+                ResultSet rs=stmt.executeQuery("select * from lab.clients where status=1");
+                Vector<String> vec = new Vector<String>();
+                Vector<String> ids = new Vector<String>();
+                Vector<String> ports = new Vector<String>();
+
+                if (rs.next())
+                {
+
+                    do {
+                        vec.add(rs.getString(2));
+                        ids.add(rs.getString(1));
+                        ports.add(rs.getString(3));
+                        // System.out.println(rs.getInt(1)+"  "+rs.getString(2));
+                    }while(rs.next());
+                    System.out.println("Available Systems : "+vec);
+                    System.out.println("Allocating System : "+vec.get(0));
+                    server client = new server(vec.get(0),ports.get(0));
+
+                    int rs1=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
+                    System.out.println("Successfully allocated System "+ids.get(0)+" to user "+roll);
+
+                }
+                else{
+                    System.out.println("Systems Not available....Please come after sometime....");
+                }
+                con.close();
+            }catch(Exception e){ System.out.println(e);
+                System.exit(0);}
 
 
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-
-        do{
-
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            input.readLine();
-            try {
-
-                server client = new server("192.168.1.3", 5056);
-                System.out.println("connection established");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }while(true);
-
+        }
 
     }
 }
-

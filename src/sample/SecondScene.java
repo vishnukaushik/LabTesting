@@ -9,6 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import java.sql.*;
+import java.util.*;
+import static java.lang.Class.forName;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,9 +43,12 @@ public class SecondScene {
         endtime.setText(initial);
     }
 
-    public void logout(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void logout(ActionEvent actionEvent) throws IOException, InterruptedException, SQLException {
 
         System.out.println("logout invoked");
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
+        Statement stmt = con.createStatement();
+        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE name='Rohit'");//and check_out=NULL
         client.Platform_store.close();
 
         Main.cleanup();

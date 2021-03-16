@@ -1,7 +1,4 @@
 package sample;
-
-
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +9,10 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Random;
+import java.sql.*;
+import java.util.*;
+import static java.lang.Class.forName;
+
 
 public class Main extends Application {
 
@@ -83,11 +84,18 @@ public class Main extends Application {
        StartApplication(primaryStage);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 //        TODO connect to database here
 
             int port_no= getRandomNumberUsingNextInt(5000,5100);
-            port_server=port_no;
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
+            Statement stmt = con.createStatement();
+            int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id='1'");
+//UPDATE `clients` SET `port`=5001 WHERE id='1'
+       // int rs1=stmt.executeUpdate("UPDATE clients  INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
+            System.out.println("Successfully updated port number to database....");
+
+        port_server=port_no;
             counter++;
             System.out.println(counter);
             StartClient(port_no);
