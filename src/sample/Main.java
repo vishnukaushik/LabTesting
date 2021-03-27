@@ -40,7 +40,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(FirstScene.class.getResource("firstScene.fxml"));
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(new Scene(root));
-        //Kiosk.kiosk(primaryStage);
+        Kiosk.kiosk(primaryStage);
         primaryStage.show();
         storage= primaryStage;
     }
@@ -57,7 +57,7 @@ public class Main extends Application {
 
     public static void restartProcess() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "cd \"C:\\Users\\P.VISHNU VARDHAN\\IdeaProjects\\LabTesting-1\" && Script.cmd");
+                "cmd.exe", "/c", "cd \"C:\\LabAuthentication\" && Script.cmd");
         //builder.redirectErrorStream(true);
         Process p = null;
         try {
@@ -88,9 +88,11 @@ public class Main extends Application {
 //        TODO connect to database here
 
             int port_no= getRandomNumberUsingNextInt(5000,5100);
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
+            Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
             Statement stmt = con.createStatement();
-            int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id='1'");
+            int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id='1455'");
+       // int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE id='1456'");
+
 //UPDATE `clients` SET `port`=5001 WHERE id='1'
        // int rs1=stmt.executeUpdate("UPDATE clients  INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
             System.out.println("Successfully updated port number to database....");
@@ -149,7 +151,9 @@ class client extends Thread{
                         line = in.readUTF();
                         System.out.println("Received : "+line);
                         if(line.equals("login")){
+
                             Platform.runLater(()->{
+
                                     Stage primaryStage = new Stage();
                                     FXMLLoader loader = new FXMLLoader();
                                     loader.setLocation(SecondScene.class.getResource("secondScene.fxml"));
@@ -171,6 +175,10 @@ class client extends Thread{
                                     Kiosk.unblockKey();
 
                             });
+                            Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
+                            Statement stmt = con.createStatement();
+                            int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id='1455' ");//and check_out=NULL
+                            System.out.println("Status set to 0");
 
                         }
                         line="ok";
@@ -180,6 +188,8 @@ class client extends Thread{
                     catch(IOException i)
                     {
                         System.out.println(i);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
                 }
 

@@ -19,7 +19,7 @@ public class Kiosk {
     private static LowLevelKeyboardProc keyboardHook;
     private static User32 lib;
     public static Thread kiosk_thread;
-    public static boolean kiosk_breaker= false;
+
 
 
     public static boolean isWindows(){
@@ -39,9 +39,7 @@ public class Kiosk {
 
 
     public static void blockKeys() {
-        if(kiosk_breaker==true){
-            System.exit(1);
-        }
+
         if (isWindows()) {
             kiosk_thread=new Thread(new Runnable() {
 
@@ -74,19 +72,10 @@ public class Kiosk {
                     WinUser.MSG msg = new WinUser.MSG();
 
                     while ((result = lib.GetMessage(msg, null, 0, 0)) != 0) {
-                        System.out.println("running while + ");
-                        System.out.print(kiosk_thread);
-                        if (result == -1) {
-                            break;
-                        }
-                        else if(kiosk_breaker){
-                            System.out.println("i am in else if loop");
-                            break;
-                        }
-                        else {
+
                             lib.TranslateMessage(msg);
                             lib.DispatchMessage(msg);
-                        }
+
                     }
 
                     lib.UnhookWindowsHookEx(hhk);
