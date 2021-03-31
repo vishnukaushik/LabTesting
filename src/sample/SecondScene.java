@@ -48,7 +48,7 @@ public class SecondScene {
         System.out.println("logout invoked");
         Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
         Statement stmt = con.createStatement();
-        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated='1456' ");//and check_out=NULL
+        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated='1455' ");//and check_out=NULL
         int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE id='1455'");
         System.out.println("Check_out and status updated");
        // int rs2=stmt.executeUpdate("UPDATE cl SET  check_out=NOW() WHERE check_out=NULL && sys_allocated=1456 ");//and check_out=NULL
