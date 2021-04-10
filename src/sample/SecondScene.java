@@ -66,7 +66,7 @@ public class SecondScene {
         Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","root","root");
         Statement stmt = con.createStatement();
         int rs1=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP='192.168.0.20' ");//and check_out=NULL
-
+//instead of making status 1 here why cant make it at begin.......
 
         client.Platform_store.close();
 
