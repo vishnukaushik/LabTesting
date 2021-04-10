@@ -85,6 +85,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws SQLException {
+        //make status=1 here as well
 
        //     int port_no= getRandomNumberUsingNextInt(5000,5100);
         int port_no=5000;
@@ -170,8 +171,12 @@ class client extends Thread{
                                     SecondScene controller = loader.getController();
 
                                     controller.setStudent(new Student(data.get(1), data.get(0)));
+                                try {
                                     controller.setTime();
-                                    primaryStage.setScene(new Scene(root,600,500));
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                                primaryStage.setScene(new Scene(root,600,500));
                                     primaryStage.show();
                                     System.out.println("i am in a fx thread");
                                     Platform_store=primaryStage;
