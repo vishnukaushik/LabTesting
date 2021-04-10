@@ -21,8 +21,9 @@ public class server
     private DataInputStream in	 = null;
 
     // constructor to put ip address and port
-    public server(String address, String port)
-    {
+    public server(String address, String port, String roll, String name) throws IOException {
+        String[] str = new String[] {roll,name,"login","login"};
+        int j=0;
         // establish a connection
         try
         {
@@ -47,7 +48,7 @@ public class server
         }
 
         // string to read message from input
-        String line = "login";
+        String line = "";
 
         // keep reading until "Over" is input
 
@@ -55,17 +56,20 @@ public class server
         {
             try
             {
+                line = str[j];
+                j++;
                 //line = input.readLine();
                 System.out.println("Sent : "+line);
                 out.writeUTF(line);
                 line = in.readUTF();
                 System.out.println("Received : "+line);
+
             }
             catch(IOException i)            {
                 System.out.println(i);
             }
         }
-
+        //out.writeUTF(line);
         // close the connection
         try
         {
@@ -122,7 +126,7 @@ public class server
                     }while(rs.next());
                     System.out.println("Available Systems : "+vec);
                     System.out.println("Allocating System : "+vec.get(0));
-                    server client = new server(vec.get(0),ports.get(0));
+                    server client = new server(vec.get(0),ports.get(0),roll,name);
 
                     int rs1=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
                     System.out.println("Successfully allocated System "+ids.get(0)+" to user "+roll);

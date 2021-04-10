@@ -36,11 +36,11 @@ public class Main extends Application {
     }
 
     public static void StartApplication(Stage primaryStage) throws IOException {
-        Kiosk.blockKeys();
+//        Kiosk.blockKeys();
         Parent root = FXMLLoader.load(FirstScene.class.getResource("firstScene.fxml"));
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(new Scene(root));
-        Kiosk.kiosk(primaryStage);
+        //Kiosk.kiosk(primaryStage);
         primaryStage.show();
         storage= primaryStage;
     }
@@ -85,13 +85,13 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws SQLException {
-//        TODO connect to database here
 
-            int port_no= getRandomNumberUsingNextInt(5000,5100);
-            Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
-            Statement stmt = con.createStatement();
-            int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id='1455'");
-       // int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE id='1456'");
+       //     int port_no= getRandomNumberUsingNextInt(5000,5100);
+        int port_no=5000;
+            //Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
+            //Statement stmt = con.createStatement();
+            //int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id='1455'");
+
 
 //UPDATE `clients` SET `port`=5001 WHERE id='1'
        // int rs1=stmt.executeUpdate("UPDATE clients  INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
@@ -141,7 +141,7 @@ class client extends Thread{
                 out = new DataOutputStream(socket.getOutputStream());
 
                 String line = "";
-
+                Vector<String> data = new Vector<String>();
                 // reads message from client until "Over" is sent
                 while (!line.equals("ok"))
                 {
@@ -149,9 +149,13 @@ class client extends Thread{
                     {
 
                         line = in.readUTF();
+                        data.add(line);
                         System.out.println("Received : "+line);
+                        //line="next";
                         if(line.equals("login")){
-
+                            line="ok";
+                            out.writeUTF(line);
+                            //line = in.readUTF();
                             Platform.runLater(()->{
 
                                     Stage primaryStage = new Stage();
@@ -165,7 +169,7 @@ class client extends Thread{
                                     }
                                     SecondScene controller = loader.getController();
 
-                                    controller.setStudent(new Student("Vishnu","059"));
+                                    controller.setStudent(new Student(data.get(1), data.get(0)));
                                     controller.setTime();
                                     primaryStage.setScene(new Scene(root,600,500));
                                     primaryStage.show();
@@ -175,21 +179,25 @@ class client extends Thread{
                                     Kiosk.unblockKey();
 
                             });
-                            Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
-                            Statement stmt = con.createStatement();
-                            int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id='1455' ");//and check_out=NULL
+                           // Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
+                            //Statement stmt = con.createStatement();
+                            //int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id='1455' ");//and check_out=NULL
                             System.out.println("Status set to 0");
 
                         }
-                        line="ok";
-                        out.writeUTF(line);
+                        else
+                        {
+                            line="next";
+                            out.writeUTF(line);
+                        }
+
+
+
 
                     }
                     catch(IOException i)
                     {
                         System.out.println(i);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
                     }
                 }
 
