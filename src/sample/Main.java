@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Random;
 import java.sql.*;
 import java.util.*;
@@ -84,19 +86,21 @@ public class Main extends Application {
        StartApplication(primaryStage);
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, UnknownHostException {
         //make status=1 here as well
 
-       //     int port_no= getRandomNumberUsingNextInt(5000,5100);
-        int port_no=5000;
-            //Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
-            //Statement stmt = con.createStatement();
-            //int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id='1455'");
-
+            int port_no= getRandomNumberUsingNextInt(5000,5100);
+            Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.185:3306/lab","root","Lab@Authentication123");
+            Statement stmt = con.createStatement();
+        InetAddress localhost = InetAddress.getLocalHost();
+        String IP = (localhost.getHostAddress()).trim();
+        System.out.println(IP);
+            int rs1=stmt.executeUpdate("UPDATE clients SET  port= "+port_no+" WHERE id="+IP);
+            int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE id="+IP);
 
 //UPDATE `clients` SET `port`=5001 WHERE id='1'
-       // int rs1=stmt.executeUpdate("UPDATE clients  INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
-            System.out.println("Successfully updated port number to database....");
+           // int rs2=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
+            System.out.println("Successfully updated port and status to database....");
 
         port_server=port_no;
             counter++;
@@ -184,9 +188,12 @@ class client extends Thread{
                                     Kiosk.unblockKey();
 
                             });
-                           // Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.17:3306/lab","root","Lab@Authentication123");
-                            //Statement stmt = con.createStatement();
-                            //int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id='1455' ");//and check_out=NULL
+                            InetAddress localhost = InetAddress.getLocalHost();
+                            String IP = (localhost.getHostAddress()).trim();
+                            System.out.println(IP);
+                           Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.185:3306/lab","root","Lab@Authentication123");
+                           Statement stmt = con.createStatement();
+                           int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id="+IP);//and check_out=NULL
                             System.out.println("Status set to 0");
 
                         }
@@ -203,6 +210,8 @@ class client extends Thread{
                     catch(IOException i)
                     {
                         System.out.println(i);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
                 }
 
@@ -228,6 +237,6 @@ class client extends Thread{
 
     public void run(){
         System.out.println("Waiting for the server in separate thread.......");
-        client obj = new client(5000);
+        client obj = new client(3160);
     }
 }
