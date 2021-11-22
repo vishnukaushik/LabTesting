@@ -90,7 +90,7 @@ public class Main extends Application {
         //make status=1 here as well
 
             int port_no= getRandomNumberUsingNextInt(5000,5100);
-            Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.185:3306/lab","root","Lab@Authentication123");
+            Connection con=DriverManager.getConnection("jdbc:mysql://192.168.0.139:3306/lab","root","Lab@Authentication123");
             Statement stmt = con.createStatement();
         InetAddress localhost = InetAddress.getLocalHost();
         String IP = (localhost.getHostAddress()).trim();
