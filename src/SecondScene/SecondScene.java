@@ -1,39 +1,28 @@
-package sample;
+package SecondScene;
 
-import com.sun.media.jfxmediaimpl.platform.Platform;
+import Credentials.DbCredentials;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
+import sample.Main;
+import sample.Student;
+import sample.Client;
+
 import java.sql.*;
-import java.util.*;
+
 import static java.lang.Class.forName;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-public class SecondScene {
+public class SecondScene implements DbCredentials{
 
     public static boolean exit_status= false;
     @FXML Label StudentName = new Label();
     @FXML Label StudentRoll = new Label();
-    @FXML Label endtime = new Label();
+    @FXML Label endTime = new Label();
     public void setStudent(Student student)
     {
         StudentName.setText("Name: "+student.getName());
@@ -42,24 +31,21 @@ public class SecondScene {
     public void setTime() throws SQLException {
         LocalTime present = LocalTime.now();
         String initial = "The session ends at " + present.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
-        Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.185:3306/lab","root","Lab@Authentication123");
+        Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP='172.16.6.185' ");//and check_out=NULL
+        int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP="+"'"+Main.IP+"' ");//and check_out=NULL
 
-        endtime.setText(initial);
+        endTime.setText(initial);
     }
 
     public void logout(ActionEvent actionEvent) throws IOException, InterruptedException, SQLException {
 
         System.out.println("logout invoked");
-        InetAddress localhost = InetAddress.getLocalHost();
-        String IP = (localhost.getHostAddress()).trim();
-        System.out.println(IP);
-        Connection con=DriverManager.getConnection("jdbc:mysql://172.16.6.185:3306/lab","root","Lab@Authentication123");
+        Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
         Statement stmt = con.createStatement();
         //also set status = 1
-        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated="+IP);//and check_out=NULL
-        int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE id="+IP);
+        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated="+"'"+Main.IP+"'");//and check_out=NULL
+        int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP="+"'"+Main.IP+"'");
         System.out.println("Check_out and status updated");
        // int rs2=stmt.executeUpdate("UPDATE cl SET  check_out=NOW() WHERE check_out=NULL && sys_allocated=1456 ");//and check_out=NULL
 //
@@ -68,7 +54,7 @@ public class SecondScene {
 //        int rs1=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP='192.168.0.20' ");//and check_out=NULL
 ////instead of making status 1 here why cant make it at begin.......
 
-        client.Platform_store.close();
+        Client.Platform_store.close();
 
         Main.cleanup();
         Main.restartProcess();
