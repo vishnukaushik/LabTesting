@@ -83,9 +83,10 @@ public class Client extends Thread implements DbCredentials {
                                 controller.setStudent(new Student(data.get(1), data.get(0)));
                                 try {
                                     controller.setTime();
-                                } catch (SQLException throwables) {
-                                    throwables.printStackTrace();
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
                                 }
+                                controller.openThread();
                                 primaryStage.setScene(new Scene(root, 600, 500));
                                 primaryStage.show();
                                 System.out.println("i am in a fx thread");
@@ -98,7 +99,6 @@ public class Client extends Thread implements DbCredentials {
                             Statement stmt = con.createStatement();
                             int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'"+Main.IP+"'");//and check_out=NULL
                             System.out.println("Status set to 0");
-
                         } else {
                             line = "next";
                             out.writeUTF(line);
