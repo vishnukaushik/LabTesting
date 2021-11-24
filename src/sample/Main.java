@@ -102,8 +102,8 @@ public class Main extends Application implements DbCredentials {
         int port_no = 5019;
         Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1 = stmt.executeUpdate("UPDATE clients SET  port= " + port_no + " WHERE id=" + "'" + IP + "'");
-        int rs2 = stmt.executeUpdate("UPDATE clients SET  status=1 WHERE id=" + "'" + IP + "'");
+        int rs1 = stmt.executeUpdate("UPDATE clients SET  port= " + port_no + " WHERE IP=" + "'" + IP + "'");
+        int rs2 = stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP=" + "'" + IP + "'");
 
 //UPDATE `clients` SET `port`=5001 WHERE id='1'
         // int rs2=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");

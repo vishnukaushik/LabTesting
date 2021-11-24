@@ -33,8 +33,8 @@ public class TimerClass implements Runnable {
             {
 //              TODO get the timer screen working
                 Stage secondaryStage = new Stage();
-                secondaryStage.setScene();
-                secondaryStage.show();
+               // secondaryStage.setScene();
+                //secondaryStage.show();
             }
         }
         SecondScene.exit_status = true;
