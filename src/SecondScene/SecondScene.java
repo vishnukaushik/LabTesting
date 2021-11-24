@@ -27,7 +27,6 @@ public class SecondScene implements DbCredentials{
     @FXML Label StudentRoll = new Label();
     @FXML Label endTime = new Label();
     public static LocalTime loggedInTime;
-    Thread t;
     public void setStudent(Student student)
     {
         StudentName.setText("Name: "+student.getName());
@@ -36,20 +35,22 @@ public class SecondScene implements DbCredentials{
     public void setTime() throws SQLException {
         loggedInTime = LocalTime.now();
         String initial = "The session ends at " + loggedInTime.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
-        Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
-        Statement stmt = con.createStatement();
-        int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP="+"'"+Main.IP+"' ");//and check_out=NULL
+//        TODO uncomment below 3 lines.
+//        Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
+//        Statement stmt = con.createStatement();
+//        int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP="+"'"+Main.IP+"' ");//and check_out=NULL
 
         endTime.setText(initial);
     }
 
-    public void openThread(){
+    public static void openThread(){
         TimerClass task = new TimerClass(loggedInTime);
-//        t = new Thread(task);
-//        t.start();
         Platform.runLater(task);
     }
-
+    public static void openThread(LocalTime loggedTime){
+        TimerClass task = new TimerClass(loggedTime);
+        Platform.runLater(task);
+    }
     public void logoutScene(ActionEvent actionEvent) throws IOException, InterruptedException, SQLException {
         TimerClass.extend = false;
         Main.logout();

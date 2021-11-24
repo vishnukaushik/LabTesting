@@ -56,11 +56,11 @@ public class FirstScene implements DbCredentials {
             int rs2=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('108','Admin',"+"'"+ Main.IP+"'"+")");
 
             controller.setTime();
-            controller.openThread();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Client.Platform_store=primaryStage;
 //          Kiosk.unblockKey();
             primaryStage.setScene(new Scene(root,600,500));
+            controller.openThread();
             primaryStage.show();
         }
         else
