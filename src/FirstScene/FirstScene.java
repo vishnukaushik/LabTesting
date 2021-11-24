@@ -49,12 +49,14 @@ public class FirstScene implements DbCredentials {
             SecondScene controller = loader.getController();
 //            TODO add name and roll no. from server to below Student object
             controller.setStudent(new Student("Admin","108"));
+
             //insert into logs -
             //change status as well
             int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP="+"'"+ Main.IP+"'");//and check_out=NULL
             int rs2=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('108','Admin',"+"'"+ Main.IP+"'"+")");
 
             controller.setTime();
+            controller.openThread();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Client.Platform_store=primaryStage;
 //          Kiosk.unblockKey();

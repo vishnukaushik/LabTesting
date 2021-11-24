@@ -16,7 +16,7 @@
          </BorderPane.margin></Label>
    </top>
    <center>
-      <Label alignment="TOP_CENTER" text="Do you want to extend the session?" BorderPane.alignment="CENTER" />
+      <Label alignment="TOP_CENTER" text="Do you want to extend the session by 1 hour?" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER_RIGHT">

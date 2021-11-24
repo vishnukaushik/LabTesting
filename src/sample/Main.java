@@ -2,6 +2,7 @@ package sample;
 
 import Credentials.DbCredentials;
 import FirstScene.FirstScene;
+import SecondScene.SecondScene;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,6 @@ import java.util.Random;
 import java.sql.*;
 import java.util.*;
 
-import static java.lang.Class.forName;
 
 
 public class Main extends Application implements DbCredentials {
@@ -116,4 +116,22 @@ public class Main extends Application implements DbCredentials {
         launch(args);
 
     }
+
+    public static void logout() throws SQLException, IOException {
+        SecondScene.exit_status = true;
+        System.out.println("logout invoked");
+        Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
+        Statement stmt = con.createStatement();
+        //also set status = 1
+        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated="+"'"+Main.IP+"'");//and check_out=NULL
+        int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP="+"'"+Main.IP+"'");
+        System.out.println("Check_out and status updated");
+
+
+        Client.Platform_store.close();
+
+        Main.cleanup();
+        Main.restartProcess();
+    }
+
 }
