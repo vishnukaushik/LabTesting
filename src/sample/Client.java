@@ -54,6 +54,7 @@ public class Client extends Thread implements DbCredentials {
                 out = new DataOutputStream(socket.getOutputStream());
 
                 String line = "";
+                boolean flag=false;
                 Vector<String> data = new Vector<String>();
                 // reads message from client until "Over" is sent
                 while (!line.equals("ok")) {
@@ -62,6 +63,8 @@ public class Client extends Thread implements DbCredentials {
                         line = in.readUTF();
                         data.add(line);
                         System.out.println("Received : " + line);
+                        if(line=="shutdown")
+                            flag=true;
                         //line="next";
                         if (line.equals("login")) {
                             line = "ok";
@@ -99,6 +102,9 @@ public class Client extends Thread implements DbCredentials {
                             Statement stmt = con.createStatement();
                             int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'"+Main.IP+"'");//and check_out=NULL
                             System.out.println("Status set to 0");
+                            if(flag)
+                                shutdown.Shutdown.main();
+                            System.out.println("Shutdown in 5 min");
                         } else {
                             line = "next";
                             out.writeUTF(line);
