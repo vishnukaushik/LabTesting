@@ -48,7 +48,7 @@ public class TempMain extends Application {
     public void start(Stage primaryStage) throws Exception{
         StartApplication(primaryStage);
     }
-    public static void main(String[] args) {
-        Application.launch();
-    }
+//    public static void main(String[] args) {
+//        Application.launch();
+//    }
 }

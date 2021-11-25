@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoadTimerScene implements Runnable{
+    public static Stage secondaryStage;
     @Override
     public void run() {
         Parent root = null;
@@ -17,7 +18,7 @@ public class LoadTimerScene implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Stage secondaryStage = new Stage();
+        secondaryStage = new Stage();
 //        secondaryStage.setAlwaysOnTop(true);
         secondaryStage.initModality(Modality.APPLICATION_MODAL);
         assert root != null;

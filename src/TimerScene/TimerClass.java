@@ -40,7 +40,6 @@ public class TimerClass implements Runnable {
     public void run() {
 
         while(sessionEndTime.compareTo(LocalTime.now())>0 && !SecondScene.exit_status){
-//            System.out.println(LocalTime.now());
             if(triggerTime.compareTo(LocalTime.now())<=0 && canPopUp)
             {
                 canPopUp = false;
@@ -50,7 +49,7 @@ public class TimerClass implements Runnable {
         SecondScene.exit_status = true;
         try {
             Main.logout();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | IOException | InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println("Session Ended");

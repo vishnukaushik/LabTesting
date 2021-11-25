@@ -40,7 +40,7 @@ public class SecondScene implements DbCredentials{
         String initial = "The session ends at " + loggedInTime.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
         Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP="+"'"+Main.IP+"' ");//and check_out=NULL
+        int rs1=stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP="+"'"+Main.IP+"' ");
         endTime.setText(initial);
     }
 
@@ -64,7 +64,8 @@ public class SecondScene implements DbCredentials{
     public static void submitFeedback(String feedback) throws SQLException {
         Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1 = stmt.executeUpdate("INSERT INTO feedback VALUES("+ "'"+IP+"'" +','+ student.getRoll()+','+ feedback+','+ LocalTime.now()+")");
+        String statement = "INSERT INTO feedback(IP, roll_no, description) VALUES("+ '"'+IP+'"' +','+ '"'+student.getRoll()+'"' +','+ '"'+feedback+'"' +")";
+        int rs1 = stmt.executeUpdate(statement);
     }
 
 }

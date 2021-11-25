@@ -1,14 +1,18 @@
 package sample;
 
 import Credentials.DbCredentials;
+import FeedbackScene.FeedbackScene;
 import FirstScene.FirstScene;
 import SecondScene.SecondScene;
+import TimerScene.LoadTimerScene;
+import TimerScene.TimerClass;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -112,8 +116,17 @@ public class Main extends Application implements DbCredentials {
 
     }
 
-    public static void logout() throws SQLException, IOException {
+    public static void logout() throws SQLException, IOException, InterruptedException {
         SecondScene.exit_status = true;
+        if(LoadTimerScene.secondaryStage!=null)
+        {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    LoadTimerScene.secondaryStage.close();
+                }
+            });
+        }
         System.out.println("logout invoked");
         Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
         Statement stmt = con.createStatement();
@@ -124,11 +137,22 @@ public class Main extends Application implements DbCredentials {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Client.Platform_store.close();
+//                Client.Platform_store.close();
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(Objects.requireNonNull(FeedbackScene.class.getResource("feedbackScene.fxml")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Stage feedbackStage = Client.Platform_store;
+                assert root != null;
+                feedbackStage.setScene(new Scene(root));
+                System.out.println("Feedback opened");
+                feedbackStage.show();
             }
         });
 
-        Main.cleanup();
+//        Main.cleanup();
         Main.restartProcess();
     }
 
