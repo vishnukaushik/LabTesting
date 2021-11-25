@@ -60,6 +60,7 @@ public class FirstScene implements DbCredentials {
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Client.Platform_store=primaryStage;
 //          Kiosk.unblockKey();
+
             Scene scene = new Scene(root,600,500);
             scene.setUserData(loader);
             primaryStage.setScene(scene);
