@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -63,8 +64,12 @@ public class Client extends Thread implements DbCredentials {
                         line = in.readUTF();
                         data.add(line);
                         System.out.println("Received : " + line);
-                        if(line=="shutdown")
+                        if(line.equals("shutdown"))
+                        {
+                            System.out.println("flag updated");
                             flag=true;
+
+                        }
                         //line="next";
                         if (line.equals("login")) {
                             line = "ok";
@@ -90,9 +95,11 @@ public class Client extends Thread implements DbCredentials {
                                     e.printStackTrace();
                                 }
                                 controller.openThread();
-                                primaryStage.setScene(new Scene(root, 600, 500));
+                                Scene scene = new Scene(root, 600, 500);
+                                scene.setUserData(loader);
+                                primaryStage.setScene(scene);
+                                primaryStage.initStyle(StageStyle.UNDECORATED);
                                 primaryStage.show();
-                                System.out.println("i am in a fx thread");
                                 Platform_store = primaryStage;
                                 Main.storage.close();
                                 Kiosk.unblockKey();
@@ -102,9 +109,10 @@ public class Client extends Thread implements DbCredentials {
                             Statement stmt = con.createStatement();
                             int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'"+Main.IP+"'");//and check_out=NULL
                             System.out.println("Status set to 0");
-                            if(flag)
+                            if(flag) {
                                 shutdown.Shutdown.main();
-                            System.out.println("Shutdown in 5 min");
+                                System.out.println("Shutdown in 5 min");
+                            }
                         } else {
                             line = "next";
                             out.writeUTF(line);
@@ -123,7 +131,6 @@ public class Client extends Thread implements DbCredentials {
             }
 
             try {
-                //input.close();
                 out.close();
                 in.close();
                 socket.close();

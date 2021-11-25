@@ -27,7 +27,6 @@ public class Main extends Application implements DbCredentials {
     static volatile boolean exit = false;
     public static boolean restart = false;
     public static int port_server;
-    public static int counter = 0;
     public static String IP;
 
     public static void StartClient(int port_no) {
@@ -64,7 +63,8 @@ public class Main extends Application implements DbCredentials {
 
     public static void restartProcess() throws IOException {
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "cd \"C:\\LabAuthentication\" && Script.cmd");
+//                C:\\Users\\admin\\IdeaProjects\\LabAuthentication\\LabTesting\
+                "cmd.exe", "/c", "cd \"C:\\Users\\admin\\IdeaProjects\\LabAuthentication\\LabTesting\\ && Script.cmd");
         //builder.redirectErrorStream(true);
         Process p = null;
         try {
@@ -104,14 +104,9 @@ public class Main extends Application implements DbCredentials {
         Statement stmt = con.createStatement();
         int rs1 = stmt.executeUpdate("UPDATE clients SET  port= " + port_no + " WHERE IP=" + "'" + IP + "'");
         int rs2 = stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP=" + "'" + IP + "'");
-
-//UPDATE `clients` SET `port`=5001 WHERE id='1'
-        // int rs2=stmt.executeUpdate("INSERT INTO `logs`(roll_no,name,sys_allocated) VALUES ('"+roll+"','"+name+"','"+ids.get(0)+"')");
         System.out.println("Successfully updated port and status to database....");
 
         port_server = port_no;
-        counter++;
-        System.out.println(counter);
         StartClient(port_no);
         launch(args);
 
@@ -122,13 +117,16 @@ public class Main extends Application implements DbCredentials {
         System.out.println("logout invoked");
         Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
         Statement stmt = con.createStatement();
-        //also set status = 1
         int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated="+"'"+Main.IP+"'");//and check_out=NULL
         int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP="+"'"+Main.IP+"'");
         System.out.println("Check_out and status updated");
 
-
-        Client.Platform_store.close();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Client.Platform_store.close();
+            }
+        });
 
         Main.cleanup();
         Main.restartProcess();

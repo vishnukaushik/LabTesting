@@ -1,6 +1,7 @@
 package FeedbackScene;
 
 import Credentials.DbCredentials;
+import SecondScene.SecondScene;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,6 +13,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
+
+import static sample.Main.IP;
 
 public class FeedbackScene {
     @FXML
@@ -28,10 +32,7 @@ public class FeedbackScene {
     public void submit(ActionEvent actionEvent) throws SQLException {
         String feedback = textArea.getText();
         System.out.println(feedback);
-//      TODO: write a query to database
-        Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
-        Statement stmt = con.createStatement();
-        int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'"+ Main.IP+"'");
+        SecondScene.submitFeedback(feedback);
         cancel(actionEvent);
     }
 }

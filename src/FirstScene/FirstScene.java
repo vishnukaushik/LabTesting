@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.Kiosk;
 import SecondScene.SecondScene;
 import sample.Main;
@@ -47,7 +48,6 @@ public class FirstScene implements DbCredentials {
             loader.setLocation(getClass().getResource("..\\SecondScene\\secondScene.fxml"));
             Parent root = loader.load();
             SecondScene controller = loader.getController();
-//            TODO add name and roll no. from server to below Student object
             controller.setStudent(new Student("Admin","108"));
 
             //insert into logs -
@@ -60,7 +60,10 @@ public class FirstScene implements DbCredentials {
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Client.Platform_store=primaryStage;
 //          Kiosk.unblockKey();
-            primaryStage.setScene(new Scene(root,600,500));
+            Scene scene = new Scene(root,600,500);
+            scene.setUserData(loader);
+            primaryStage.setScene(scene);
+            primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.show();
         }
         else
