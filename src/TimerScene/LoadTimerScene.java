@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LoadTimerScene implements Runnable{
+public class LoadTimerScene implements Runnable {
     public static Stage secondaryStage;
+
     @Override
     public void run() {
         Parent root = null;

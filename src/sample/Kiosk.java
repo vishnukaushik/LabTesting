@@ -9,9 +9,6 @@ import com.sun.jna.platform.win32.WinUser.HHOOK;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Kiosk {
 
@@ -21,14 +18,12 @@ public class Kiosk {
     public static Thread kiosk_thread;
 
 
-
-    public static boolean isWindows(){
+    public static boolean isWindows() {
         String os = System.getProperty("os.name").toLowerCase();
         return (os.contains("win"));
     }
 
-    public static void kiosk(Stage primaryStage)
-    {
+    public static void kiosk(Stage primaryStage) {
         primaryStage.setAlwaysOnTop(true);
         primaryStage.setMaximized(true);
         primaryStage.setFullScreen(true);
@@ -37,11 +32,10 @@ public class Kiosk {
     }
 
 
-
     public static void blockKeys() {
 
         if (isWindows()) {
-            kiosk_thread=new Thread(new Runnable() {
+            kiosk_thread = new Thread(new Runnable() {
 
                 @Override
                 public void run() {
@@ -50,7 +44,7 @@ public class Kiosk {
                     keyboardHook = new LowLevelKeyboardProc() {
                         public WinDef.LRESULT callback(int nCode, WinDef.WPARAM wParam, WinUser.KBDLLHOOKSTRUCT info) {
                             if (nCode >= 0) {
-                                switch (info.vkCode){
+                                switch (info.vkCode) {
                                     case 0x14: // capslock
                                     case 0x5B: // Windows key
                                     case 0x73: //F4 key
@@ -73,8 +67,8 @@ public class Kiosk {
 
                     while ((result = lib.GetMessage(msg, null, 0, 0)) != 0) {
 
-                            lib.TranslateMessage(msg);
-                            lib.DispatchMessage(msg);
+                        lib.TranslateMessage(msg);
+                        lib.DispatchMessage(msg);
 
                     }
 

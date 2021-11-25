@@ -1,7 +1,6 @@
 package sample;
 //192.168.0.139
-import FeedbackScene.FeedbackScene;
-import FirstScene.FirstScene;
+
 import SecondScene.SecondScene;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +10,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
-
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 public class TempMain extends Application {
 //    public static void StartApplication(Stage primaryStage) throws IOException {
@@ -37,7 +33,7 @@ public class TempMain extends Application {
         primaryStage.setScene(new Scene(root));
 
         SecondScene controller = loader.getController();
-        controller.setStudent(new Student("Admin","108"));
+        controller.setStudent(new Student("Admin", "108"));
         controller.setTime();
         primaryStage.show();
         controller.openThread();
@@ -45,7 +41,7 @@ public class TempMain extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         StartApplication(primaryStage);
     }
 //    public static void main(String[] args) {

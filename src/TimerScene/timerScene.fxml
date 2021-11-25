@@ -5,34 +5,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TimerScene.TimerScene">
-   <top>
-      <Label text="Timer" textAlignment="CENTER" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="System Bold" size="22.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin></Label>
-   </top>
-   <center>
-      <Label alignment="TOP_CENTER" text="Do you want to extend the session by 1 hour?" BorderPane.alignment="CENTER" />
-   </center>
-   <bottom>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER_RIGHT">
-         <children>
-            <Button fx:id="btn_extend" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#extendSession" text="Extend">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin></Button>
-            <Button fx:id="btn_cancel" mnemonicParsing="false" onAction="#cancel" text="Cancel">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin></Button>
-         </children>
-         <opaqueInsets>
-            <Insets top="1.0" />
-         </opaqueInsets>
-      </HBox>
-   </bottom>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="TimerScene.TimerScene">
+    <top>
+        <Label text="Timer" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="System Bold" size="22.0"/>
+            </font>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <Label alignment="TOP_CENTER" text="Do you want to extend the session by 1 hour?"
+               BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER_RIGHT">
+            <children>
+                <Button fx:id="btn_extend" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#extendSession"
+                        text="Extend">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="btn_cancel" mnemonicParsing="false" onAction="#cancel" text="Cancel">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+            <opaqueInsets>
+                <Insets top="1.0"/>
+            </opaqueInsets>
+        </HBox>
+    </bottom>
 </BorderPane>

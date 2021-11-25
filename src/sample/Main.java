@@ -5,22 +5,24 @@ import FeedbackScene.FeedbackScene;
 import FirstScene.FirstScene;
 import SecondScene.SecondScene;
 import TimerScene.LoadTimerScene;
-import TimerScene.TimerClass;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Objects;
 import java.util.Random;
-import java.sql.*;
-import java.util.*;
-
 
 
 public class Main extends Application implements DbCredentials {
@@ -118,8 +120,7 @@ public class Main extends Application implements DbCredentials {
 
     public static void logout() throws SQLException, IOException, InterruptedException {
         SecondScene.exit_status = true;
-        if(LoadTimerScene.secondaryStage!=null)
-        {
+        if (LoadTimerScene.secondaryStage != null) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -128,10 +129,10 @@ public class Main extends Application implements DbCredentials {
             });
         }
         System.out.println("logout invoked");
-        Connection con= DriverManager.getConnection(DbCredentials.url,DbCredentials.user,DbCredentials.password);
+        Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1=stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated="+"'"+Main.IP+"'");//and check_out=NULL
-        int rs2=stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP="+"'"+Main.IP+"'");
+        int rs1 = stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated=" + "'" + Main.IP + "'");//and check_out=NULL
+        int rs2 = stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP=" + "'" + Main.IP + "'");
         System.out.println("Check_out and status updated");
 
         Platform.runLater(new Runnable() {

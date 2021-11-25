@@ -13,7 +13,6 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -55,7 +54,7 @@ public class Client extends Thread implements DbCredentials {
                 out = new DataOutputStream(socket.getOutputStream());
 
                 String line = "";
-                boolean flag=false;
+                boolean flag = false;
                 Vector<String> data = new Vector<String>();
                 // reads message from client until "Over" is sent
                 while (!line.equals("ok")) {
@@ -64,10 +63,9 @@ public class Client extends Thread implements DbCredentials {
                         line = in.readUTF();
                         data.add(line);
                         System.out.println("Received : " + line);
-                        if(line.equals("shutdown"))
-                        {
+                        if (line.equals("shutdown")) {
                             System.out.println("flag updated");
-                            flag=true;
+                            flag = true;
 
                         }
                         //line="next";
@@ -107,9 +105,9 @@ public class Client extends Thread implements DbCredentials {
                             });
                             Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
                             Statement stmt = con.createStatement();
-                            int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'"+Main.IP+"'");//and check_out=NULL
+                            int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'" + Main.IP + "'");//and check_out=NULL
                             System.out.println("Status set to 0");
-                            if(flag) {
+                            if (flag) {
                                 shutdown.Shutdown.main();
                                 System.out.println("Shutdown in 5 min");
                             }
