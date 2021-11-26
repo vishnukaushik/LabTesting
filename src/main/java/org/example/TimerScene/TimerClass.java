@@ -37,16 +37,19 @@ public class TimerClass implements Runnable {
 
         while (sessionEndTime.compareTo(LocalTime.now()) > 0 && !SecondScene.exit_status) {
             if (triggerTime.compareTo(LocalTime.now()) <= 0 && canPopUp) {
+                System.out.println(LocalTime.now());
                 canPopUp = false;
                 Platform.runLater(new LoadTimerScene());
             }
         }
         SecondScene.exit_status = true;
-        try {
-            MainClass.logout();
-        } catch (SQLException | IOException | InterruptedException e) {
-            e.printStackTrace();
+        if(canPopUp)
+        {
+            try {
+                MainClass.logout();
+            } catch (SQLException | IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println("Session Ended");
     }
 }

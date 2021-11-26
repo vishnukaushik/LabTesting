@@ -132,8 +132,11 @@ public class Client extends Thread implements DbCredentials {
             try {
                 out.close();
                 in.close();
+                input.close();
+                server.close();
                 socket.close();
             } catch (IOException i) {
+                System.out.println("Error in Client Code");
                 System.out.println(i);
             }
         }

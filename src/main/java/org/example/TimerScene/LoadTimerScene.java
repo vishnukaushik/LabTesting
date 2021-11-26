@@ -7,6 +7,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoadTimerScene implements Runnable {
     public static Stage secondaryStage;
@@ -15,7 +16,7 @@ public class LoadTimerScene implements Runnable {
     public void run() {
         Parent root = null;
         try {
-            root = FXMLLoader.load(TimerClass.class.getResource("/timerScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(TimerClass.class.getResource("/timerScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
