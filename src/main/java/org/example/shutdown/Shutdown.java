@@ -1,5 +1,5 @@
 
-package shutdown;
+package org.example.shutdown;
 
 import java.io.*;
 
@@ -10,7 +10,7 @@ public class Shutdown {
         Runtime runtime = Runtime.getRuntime();
         try {
             System.out.println("Shutting down the PC after 5 seconds.");
-            runtime.exec("shutdown -s -t 5");
+            runtime.exec("org.example.shutdown -s -t 5");
         } catch (IOException e) {
             System.out.println("Exception: " + e);
         }

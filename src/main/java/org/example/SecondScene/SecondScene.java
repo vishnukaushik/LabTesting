@@ -1,12 +1,12 @@
-package SecondScene;
+package org.example.SecondScene;
 
-import Credentials.DbCredentials;
-import TimerScene.TimerClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import sample.Main;
-import sample.Student;
+import org.example.Credentials.DbCredentials;
+import org.example.TimerScene.TimerClass;
+import org.example.sample.MainClass;
+import org.example.sample.Student;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,7 +16,7 @@ import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import static sample.Main.IP;
+import static org.example.sample.MainClass.IP;
 
 public class SecondScene implements DbCredentials {
 
@@ -41,7 +41,7 @@ public class SecondScene implements DbCredentials {
         String initial = "The session ends at " + loggedInTime.plusHours(25).format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
         Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP=" + "'" + Main.IP + "' ");
+        int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE IP=" + "'" + IP + "' ");
         endTime.setText(initial);
     }
 
@@ -60,7 +60,7 @@ public class SecondScene implements DbCredentials {
 
     public void logoutScene(ActionEvent actionEvent) throws IOException, InterruptedException, SQLException {
         TimerClass.extend = false;
-        Main.logout();
+        MainClass.logout();
     }
 
     public static void submitFeedback(String feedback) throws SQLException {

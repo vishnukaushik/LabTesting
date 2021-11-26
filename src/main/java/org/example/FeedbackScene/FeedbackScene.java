@@ -1,6 +1,6 @@
-package FeedbackScene;
+package org.example.FeedbackScene;
 
-import SecondScene.SecondScene;
+import org.example.SecondScene.SecondScene;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

@@ -1,13 +1,14 @@
-package sample;
+package org.example.sample;
 
-import Credentials.DbCredentials;
-import SecondScene.SecondScene;
+import org.example.Credentials.DbCredentials;
+import org.example.SecondScene.SecondScene;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.example.shutdown.Shutdown;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -38,7 +39,7 @@ public class Client extends Thread implements DbCredentials {
             try {
                 server = new ServerSocket(port);
                 System.out.println("main.java.Client started");
-                System.out.println(Main.port_server);
+                System.out.println(MainClass.port_server);
                 System.out.println("Waiting for server to respond ...");
 
 
@@ -77,7 +78,7 @@ public class Client extends Thread implements DbCredentials {
 
                                 Stage primaryStage = new Stage();
                                 FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(SecondScene.class.getResource("secondScene.fxml"));
+                                loader.setLocation(SecondScene.class.getResource("/secondScene.fxml"));
                                 Parent root = null;
                                 try {
                                     root = loader.load();
@@ -99,16 +100,16 @@ public class Client extends Thread implements DbCredentials {
                                 primaryStage.initStyle(StageStyle.UNDECORATED);
                                 primaryStage.show();
                                 Platform_store = primaryStage;
-                                Main.storage.close();
+                                MainClass.storage.close();
                                 Kiosk.unblockKey();
 
                             });
                             Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
                             Statement stmt = con.createStatement();
-                            int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'" + Main.IP + "'");//and check_out=NULL
+                            int rs1 = stmt.executeUpdate("UPDATE clients SET  status=0 WHERE id=" + "'" + MainClass.IP + "'");//and check_out=NULL
                             System.out.println("Status set to 0");
                             if (flag) {
-                                shutdown.Shutdown.main();
+                                Shutdown.main();
                                 System.out.println("Shutdown in 5 min");
                             }
                         } else {

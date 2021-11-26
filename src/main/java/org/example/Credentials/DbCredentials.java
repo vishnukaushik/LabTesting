@@ -1,4 +1,4 @@
-package Credentials;
+package org.example.Credentials;
 
 public interface DbCredentials {
 

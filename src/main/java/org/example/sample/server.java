@@ -1,4 +1,4 @@
-package sample;// A Java program for a Client
+package org.example.sample;// A Java program for a Client
 
 //package main.java;
 

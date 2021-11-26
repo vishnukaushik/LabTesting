@@ -1,10 +1,9 @@
-package sample;
+package org.example.sample;
 
-import Credentials.DbCredentials;
-import FeedbackScene.FeedbackScene;
-import FirstScene.FirstScene;
-import SecondScene.SecondScene;
-import TimerScene.LoadTimerScene;
+import org.example.Credentials.DbCredentials;
+import org.example.FeedbackScene.FeedbackScene;
+import org.example.SecondScene.SecondScene;
+import org.example.TimerScene.LoadTimerScene;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.Random;
 
 
-public class Main extends Application implements DbCredentials {
+public class MainClass extends Application implements DbCredentials {
 
     public static Stage storage = null;
     public static String[] arguments;
@@ -48,7 +48,7 @@ public class Main extends Application implements DbCredentials {
 
     public static void StartApplication(Stage primaryStage) throws IOException {
 //        Kiosk.blockKeys();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(FirstScene.class.getResource("../FirstScene/firstScene.fxml")));
+        Parent root = FXMLLoader.load(MainClass.class.getClassLoader().getResource("firstScene.fxml"));
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(new Scene(root));
         //Kiosk.kiosk(primaryStage);
@@ -99,13 +99,14 @@ public class Main extends Application implements DbCredentials {
         StartApplication(primaryStage);
     }
 
-    public static void main(String[] args) throws SQLException, UnknownHostException {
+    public static void main(String[] args) throws SQLException, UnknownHostException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         //make status=1 here as well
         InetAddress localhost = InetAddress.getLocalHost();
         IP = (localhost.getHostAddress()).trim();
         System.out.println(IP);
 //       TODO uncomment the below line  ...  int port_no = getRandomNumberUsingNextInt(5000, 5100);
         int port_no = 5019;
+//        Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
         Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
         int rs1 = stmt.executeUpdate("UPDATE clients SET  port= " + port_no + " WHERE IP=" + "'" + IP + "'");
@@ -131,8 +132,8 @@ public class Main extends Application implements DbCredentials {
         System.out.println("logout invoked");
         Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
-        int rs1 = stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated=" + "'" + Main.IP + "'");//and check_out=NULL
-        int rs2 = stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP=" + "'" + Main.IP + "'");
+        int rs1 = stmt.executeUpdate("UPDATE logs SET  check_out=NOW() WHERE check_out is NULL && sys_allocated=" + "'" + MainClass.IP + "'");//and check_out=NULL
+        int rs2 = stmt.executeUpdate("UPDATE clients SET  status=1 WHERE IP=" + "'" + MainClass.IP + "'");
         System.out.println("Check_out and status updated");
 
         Platform.runLater(new Runnable() {
@@ -141,7 +142,7 @@ public class Main extends Application implements DbCredentials {
 //                Client.Platform_store.close();
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(Objects.requireNonNull(FeedbackScene.class.getResource("feedbackScene.fxml")));
+                    root = FXMLLoader.load(Objects.requireNonNull(FeedbackScene.class.getResource("/feedbackScene.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -154,7 +155,7 @@ public class Main extends Application implements DbCredentials {
         });
 
 //        Main.cleanup();
-        Main.restartProcess();
+        MainClass.restartProcess();
     }
 
 }

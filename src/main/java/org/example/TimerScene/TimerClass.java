@@ -1,9 +1,9 @@
-package TimerScene;
+package org.example.TimerScene;
 
 
-import SecondScene.SecondScene;
 import javafx.application.Platform;
-import sample.Main;
+import org.example.SecondScene.SecondScene;
+import org.example.sample.MainClass;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -43,7 +43,7 @@ public class TimerClass implements Runnable {
         }
         SecondScene.exit_status = true;
         try {
-            Main.logout();
+            MainClass.logout();
         } catch (SQLException | IOException | InterruptedException e) {
             e.printStackTrace();
         }

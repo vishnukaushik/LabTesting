@@ -1,4 +1,4 @@
-package TimerScene;
+package org.example.TimerScene;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +15,7 @@ public class LoadTimerScene implements Runnable {
     public void run() {
         Parent root = null;
         try {
-            root = FXMLLoader.load(TimerClass.class.getResource("timerScene.fxml"));
+            root = FXMLLoader.load(TimerClass.class.getResource("/timerScene.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
