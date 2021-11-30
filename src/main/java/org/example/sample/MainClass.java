@@ -44,11 +44,11 @@ public class MainClass extends Application implements DbCredentials {
     }
 
     public static void StartApplication(Stage primaryStage) throws IOException {
-//        Kiosk.blockKeys();
+        Kiosk.blockKeys();
         Parent root = FXMLLoader.load(MainClass.class.getClassLoader().getResource("firstScene.fxml"));
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(new Scene(root));
-//        Kiosk.kiosk(primaryStage);
+        Kiosk.kiosk(primaryStage);
         primaryStage.show();
         storage = primaryStage;
     }
