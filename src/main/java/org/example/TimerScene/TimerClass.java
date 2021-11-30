@@ -43,7 +43,7 @@ public class TimerClass implements Runnable {
             }
         }
         SecondScene.exit_status = true;
-        if(canPopUp)
+        if(!canPopUp)
         {
             try {
                 MainClass.logout();

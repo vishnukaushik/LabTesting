@@ -2,11 +2,19 @@ package org.example.sample;// A Java program for a Client
 
 //package main.java;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.util.Vector;
 
 import static java.lang.Class.forName;
 

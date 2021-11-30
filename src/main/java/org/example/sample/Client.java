@@ -1,13 +1,13 @@
 package org.example.sample;
 
-import org.example.Credentials.DbCredentials;
-import org.example.SecondScene.SecondScene;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.example.Credentials.DbCredentials;
+import org.example.SecondScene.SecondScene;
 import org.example.shutdown.Shutdown;
 
 import java.io.BufferedInputStream;
@@ -94,6 +94,7 @@ public class Client extends Thread implements DbCredentials {
                                     e.printStackTrace();
                                 }
                                 controller.openThread();
+                                assert root != null;
                                 Scene scene = new Scene(root, 600, 500);
                                 scene.setUserData(loader);
                                 primaryStage.setScene(scene);

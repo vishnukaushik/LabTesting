@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import org.example.SecondScene.SecondScene;
 import org.example.sample.MainClass;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class FeedbackScene {
@@ -17,13 +16,13 @@ public class FeedbackScene {
     private TextArea textArea;
 
 
-    public void cancel(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void cancel(ActionEvent actionEvent) {
         Stage stage = (Stage) btn_cancel.getScene().getWindow();
         stage.close();
         MainClass.restartProcess();
     }
 
-    public void submit(ActionEvent actionEvent) throws SQLException, IOException, InterruptedException {
+    public void submit(ActionEvent actionEvent) throws SQLException {
         String feedback = textArea.getText();
         System.out.println(feedback);
         SecondScene.submitFeedback(feedback);

@@ -59,12 +59,13 @@ public class SecondScene implements DbCredentials {
     }
 
     public void logoutScene(ActionEvent actionEvent) throws IOException, InterruptedException, SQLException {
-        TimerClass.extend = false;
-        if(TimerClass.canPopUp)
-        {
-            System.out.println("Logout called from logout btn");
-            MainClass.logout();
-        }
+        MainClass.logout();
+        //        TimerClass.extend = false;
+//        if(TimerClass.canPopUp)
+//        {
+//            System.out.println("Logout called from logout btn");
+//            MainClass.logout();
+//        }
     }
 
     public static void submitFeedback(String feedback) throws SQLException {

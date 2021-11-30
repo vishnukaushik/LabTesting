@@ -1,10 +1,10 @@
 package org.example.TimerScene;
 
-import org.example.SecondScene.SecondScene;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import org.example.SecondScene.SecondScene;
 import org.example.sample.Client;
 
 

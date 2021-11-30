@@ -1,7 +1,7 @@
 
 package org.example.shutdown;
 
-import java.io.*;
+import java.io.IOException;
 
 public class Shutdown {
 

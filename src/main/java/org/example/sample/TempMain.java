@@ -1,12 +1,12 @@
 package org.example.sample;
 //192.168.0.139
 
-import org.example.SecondScene.SecondScene;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.SecondScene.SecondScene;
 
 import java.io.IOException;
 import java.sql.SQLException;

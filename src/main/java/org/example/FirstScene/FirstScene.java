@@ -1,7 +1,5 @@
 package org.example.FirstScene;
 
-import org.example.Credentials.DbCredentials;
-import org.example.SecondScene.SecondScene;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import org.example.Credentials.DbCredentials;
+import org.example.SecondScene.SecondScene;
 import org.example.sample.Client;
 import org.example.sample.MainClass;
 import org.example.sample.Student;
@@ -46,7 +45,7 @@ public class FirstScene implements DbCredentials {
         if ((realUsername.equals(username.getText())) && (realPassword.equals(password.getText()))) {
             message.setText("Login Successful");
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("..\\org.example.SecondScene\\secondScene.fxml"));
+            loader.setLocation(getClass().getResource("/secondScene.fxml"));
             Parent root = loader.load();
             SecondScene controller = loader.getController();
             controller.setStudent(new Student("Admin", "108"));
@@ -65,7 +64,7 @@ public class FirstScene implements DbCredentials {
             Scene scene = new Scene(root, 600, 500);
             scene.setUserData(loader);
             primaryStage.setScene(scene);
-            primaryStage.initStyle(StageStyle.UNDECORATED);
+//            primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.show();
         } else {
             message.setText("Login Failed!!! Retry");

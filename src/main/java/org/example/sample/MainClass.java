@@ -28,10 +28,7 @@ import java.util.Random;
 public class MainClass extends Application implements DbCredentials {
 
     public static Stage storage = null;
-    public static String[] arguments;
     public static Thread client_Thread;
-    static volatile boolean exit = false;
-    public static boolean restart = false;
     public static int port_server;
     public static String IP;
 
@@ -51,15 +48,9 @@ public class MainClass extends Application implements DbCredentials {
         Parent root = FXMLLoader.load(MainClass.class.getClassLoader().getResource("firstScene.fxml"));
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(new Scene(root));
-        //Kiosk.kiosk(primaryStage);
+//        Kiosk.kiosk(primaryStage);
         primaryStage.show();
         storage = primaryStage;
-    }
-
-    public static void cleanup() {
-
-        client_Thread.interrupt();
-        Platform.exit();
     }
 
     public static int getRandomNumberUsingNextInt(int min, int max) {
@@ -67,19 +58,10 @@ public class MainClass extends Application implements DbCredentials {
         return random.nextInt(max - min) + min;
     }
 
-    public static void restartProcess() throws IOException, InterruptedException {
-        /*String cmd = "C:\\Users\\admin\\IdeaProjects\\LabAuthentication\\LabTesting\\Script.cmd";
-        Runtime run = Runtime.getRuntime();
-        Process pr = run.exec(cmd);
-        pr.waitFor();
-        BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-        String line = "";
-        while ((line=buf.readLine())!=null) {
-            System.out.println(line);
-        }*/
+    public static void restartProcess() {
         System.out.println("restart process started!");
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "\"C:\\Users\\admin\\IdeaProjects\\LabAuthentication\\LabTesting\\Script.cmd");
+                "cmd.exe", "/c", System.getProperty("user.dir")+"\\Script.cmd");
         //builder.redirectErrorStream(true);
         Process p = null;
         try {
@@ -113,10 +95,10 @@ public class MainClass extends Application implements DbCredentials {
         //make status=1 here as well
         InetAddress localhost = InetAddress.getLocalHost();
         IP = (localhost.getHostAddress()).trim();
-        System.out.println(IP);
-//       TODO uncomment the below line  ...  int port_no = getRandomNumberUsingNextInt(5000, 5100);
-        int port_no = 5019;
-//        Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+        System.out.println("Number of threads: "+Thread.activeCount());
+//       TODO uncomment the below line  ...
+        int port_no = getRandomNumberUsingNextInt(5000, 5100);
+        System.out.println("The port number is: "+port_no);
         Connection con = DriverManager.getConnection(DbCredentials.url, DbCredentials.user, DbCredentials.password);
         Statement stmt = con.createStatement();
         int rs1 = stmt.executeUpdate("UPDATE clients SET  port= " + port_no + " WHERE IP=" + "'" + IP + "'");
@@ -142,7 +124,6 @@ public class MainClass extends Application implements DbCredentials {
         System.out.println("Check_out and status updated");
 
         Platform.runLater(() -> {
-//                Client.Platform_store.close();
             System.out.println("Feedback just opened");
             Parent root = null;
             try {
@@ -151,15 +132,12 @@ public class MainClass extends Application implements DbCredentials {
                 e.printStackTrace();
             }
             Stage feedbackStage = Client.Platform_store;
-//            Stage feedbackStage = new Stage();
             assert root != null;
             feedbackStage.setScene(new Scene(root));
             System.out.println("Feedback opened");
             feedbackStage.show();
         });
-
-//        MainClass.cleanup();
-//        MainClass.restartProcess();
+        System.out.println("The working directory is: "+System.getProperty("user.dir"));
     }
 
 }
